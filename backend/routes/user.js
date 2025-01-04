@@ -2,9 +2,9 @@
 const express = require("express");
 const zod = require("zod");
 const router = express.Router();
-const { User } = require("../db");
+const { User } = require("../model/db");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
+const { JWT_SECRET } = require("../config/serverConfig");
 const { authMiddleware } = require("../middleware");
 const { route } = require("./user");
 
@@ -111,7 +111,6 @@ router.patch("/update", authMiddleware, async (req, res) => {
 });
 
 router.get("/bulk", async (req, res) => {
-
     const filter = req.query.filter || "";
     const users = await User.find({
         $or: [

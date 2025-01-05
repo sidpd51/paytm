@@ -13,5 +13,5 @@ app.use("/api/v1/", mainRouter);
 
 app.listen(PORT, async () => {
     await connectDb();
-    console.log("server is listening on port: 3000");
+    console.log(`server is listening on port: ${PORT}`);
 });

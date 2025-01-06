@@ -7,7 +7,7 @@ const { default: mongoose } = require("mongoose");
 
 const transferBalanceSchema = zod.object({
     to: zod.string(),
-    balance: zod.number().min(1),
+    balance: zod.string(),
 });
 
 router.get("/balance", authMiddleware, async (req, res) => {
@@ -26,7 +26,8 @@ router.patch("/transfer", authMiddleware, async (req, res) => {
     session.startTransaction();
 
     try {
-        const { success } = transferBalanceSchema.safeParse(req.body);
+        const {success} = transferBalanceSchema.safeParse(req.body);
+
         if (!success) {
             return res.status(400).json({
                 message:

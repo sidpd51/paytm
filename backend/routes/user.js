@@ -8,10 +8,10 @@ const { JWT_SECRET } = require("../config/serverConfig");
 const { authMiddleware } = require("../middleware/middleware");
 
 const signupSchema = zod.object({
-    username: zod.string(),
-    firstname: zod.string(),
-    lastname: zod.string(),
-    password: zod.string(),
+    username: zod.string().min(1),
+    firstname: zod.string().min(1),
+    lastname: zod.string().min(1),
+    password: zod.string().min(1),
 });
 
 const siginSchema = zod.object({
@@ -31,7 +31,7 @@ router.post("/signup", async (req, res) => {
 
     if (!z.success) {
         return res.status(411).json({
-            message: "incorrect inputs",
+            message: "validation error/incorrect inputs",
         });
     }
 
@@ -46,7 +46,7 @@ router.post("/signup", async (req, res) => {
             userId: dbUser._id,
             balance: Math.floor(Math.random()*1000 +1)
         })
-        
+
         const token = jwt.sign(
             {
                 userId: dbUser._id,
@@ -115,7 +115,7 @@ router.patch("/update", authMiddleware, async (req, res) => {
     });
 });
 
-router.get("/bulk", async (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter || "";
     const users = await User.find({
         $or: [

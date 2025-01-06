@@ -4,7 +4,9 @@ const { JWT_SECRET } = require("../config/serverConfig");
 const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader?.startsWith("Bearer")) {
-        return res.status(403).json({})
+        return res.status(403).json({
+            message: "Access restricted to authorized users only."
+        })
     }
 
     const token = authHeader.split(" ")[1];
